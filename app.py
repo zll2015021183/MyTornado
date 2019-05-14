@@ -2,7 +2,7 @@ import tornado.web
 from tornado.options import define, options
 
 # 自定义的模块
-from handlers import main
+from handlers import main, account
 from handlers.main import IndexHandler, ExploreHandler
 
 # 定义端口信息
@@ -18,7 +18,7 @@ class Application(tornado.web.Application):
             (r'/', main.IndexHandler),
             (r'/explore', ExploreHandler),
             (r'/post/(?P<post_id>[0-9]+)', main.PostHandler),
-
+            (r'/register', account.RegisterHandler),
         ]
 
         """配置信息"""
