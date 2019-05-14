@@ -16,7 +16,7 @@ class User(Base):
     email = Column(String(80))
 
     def __repr__(self):
-        return "(User-table)<id:{},username:{}>".format(self.id, self.username)
+        return "<User表：id:{},username:{}>".format(self.id, self.username)
 
 
 class Post(Base):
@@ -28,7 +28,7 @@ class Post(Base):
     user = relationship('User', backref='posts', uselist=False, cascade='all')  # uselist=False(一对一)，uselist=True(一对多)
 
     def __repr__(self):
-        return "(Post-table)<id:{}>".format(self.id)
+        return "<Post表：id:{}>".format(self.id)
 
 
 # 用户注册
