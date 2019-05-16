@@ -19,6 +19,8 @@ class Application(tornado.web.Application):
             (r'/explore', ExploreHandler),
             (r'/post/(?P<post_id>[0-9]+)', main.PostHandler),
             (r'/register', account.RegisterHandler),
+            (r'/login', account.LoginHandler),
+            (r'/upload', main.UploadHandler),
         ]
 
         """配置信息"""
@@ -26,8 +28,23 @@ class Application(tornado.web.Application):
             debug=debug,
             template_path='templates',
             static_path='statics',
-        )
-
+            login_url='/login',  # 登陆页面
+            cookie_secret="dsffjdioashjd",
+            pycket={
+                'engine': 'redis',  # redis引擎
+                'storage': {
+                    'host': 'localhost',  # host
+                    'port': 6379,  # 端口
+                    'db_sessions': 5,  # 哪一个redis
+                    'db_notifications': 11,  # 用于通知数据的数据集
+                    'max_connections': 2 ** 31,  # 最大连接数
+                },
+                'cookies': {
+                    'expires_days': 30,  # cookie过期时间
+                    'max_age': 100
+                },
+            },
+        ),
         super().__init__(handlers, **settings)
 
 

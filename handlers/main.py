@@ -1,4 +1,13 @@
 import tornado.web
+from PIL import Image
+from pycket.session import SessionMixin
+
+from util.account import add_post, get_all_posts, get_post
+
+
+class BaseHandler(tornado.web.RequestHandler, SessionMixin):
+    def get_current_user(self):
+        return self.session.get('tudo_user', None)
 
 
 class IndexHandler(tornado.web.RequestHandler):
@@ -26,4 +35,8 @@ class PostHandler(tornado.web.RequestHandler):
     """
 
     def get(self, post_id):
-        self.render('post.html', post_id=post_id)
+        post = get_post(post_id)
+        if not post:
+            self.write('wrong id {}'.format(post_id))
+        else:
+            self.render('post.html', post_id=post)
