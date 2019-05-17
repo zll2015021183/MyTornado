@@ -7,7 +7,7 @@ from util.account import add_post, get_all_posts, get_post
 
 class BaseHandler(tornado.web.RequestHandler, SessionMixin):
     def get_current_user(self):
-        return self.session.get('tudo_user', None)
+        return self.session.get('my_user', None)
 
 
 class IndexHandler(tornado.web.RequestHandler):
@@ -17,12 +17,13 @@ class IndexHandler(tornado.web.RequestHandler):
     """
 
     def get(self):
-        self.render('index.html')
+        posts = get_all_posts()
+        self.render('index.html', posts=posts)
 
 
 class ExploreHandler(tornado.web.RequestHandler):
     """
-    最近上传的图片
+    最近上传的图片(缩略图)
     """
 
     def get(self):
@@ -37,6 +38,29 @@ class PostHandler(tornado.web.RequestHandler):
     def get(self, post_id):
         post = get_post(post_id)
         if not post:
-            self.write('wrong id {}'.format(post_id))
+            self.write('wrong post id {}'.format(post_id))
         else:
-            self.render('post.html', post_id=post)
+            self.render('post.html', post=post)
+
+
+# 图片上传
+class UploadHandler(BaseHandler):
+    @tornado.web.authenticated
+    def get(self):
+        self.render('upload.html')
+
+    @tornado.web.authenticated
+    def post(self):
+        pics = self.request.files.get('picture', [])
+        post_id = 1
+        for p in pics:
+            # 保存原图
+            save_path = 'statics/upload/{}'.format(p['filename'])
+            with open(save_path, 'wb') as f:
+                f.write(p['body'])
+                post_id = add_post('upload/{}'.format(p['filename']), self.current_user)
+            im = Image.open(save_path)
+            im.thumbnail((200, 200))
+            # 保存缩略图
+            im.save('statics/upload/thumb_{}.jpg'.format(p['filename']), 'JPEG')
+        self.redirect('post/{}'.format(post_id))

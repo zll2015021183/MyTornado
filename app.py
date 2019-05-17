@@ -44,7 +44,7 @@ class Application(tornado.web.Application):
                     'max_age': 100
                 },
             },
-        ),
+        )
         super().__init__(handlers, **settings)
 
 
