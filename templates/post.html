@@ -4,6 +4,8 @@
 
 {% block body %}
 
-    post_id: {{ post_id }}
-
+post id号：{{ post.id }} 上传者：{{ post.user.username }}<br>
+<a href="/">返回主页</a><br><br>
+<img src="{{ static_url(post.image_url) }}">
+    
 {% end %}

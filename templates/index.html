@@ -4,7 +4,11 @@
 
 {% block body %}
 
-    index
+<a href="/upload">去上传图片</a><br><br>
+
+{% for p in posts %}
+    <img src="{{ static_url(p.image_url) }}"> &nbsp;
+{% end %}
 
 {% end %}
 
