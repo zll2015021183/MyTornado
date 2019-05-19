@@ -37,6 +37,7 @@ class Post(Base):
     __tablename__ = 'posts'
     id = Column(Integer, primary_key=True, autoincrement=True)
     image_url = Column(String(200))
+    thumb_url = Column(String(200))
     user_id = Column(Integer, ForeignKey('users.id'))
     # user_id = Column(Integer, ForeignKey(User.id)) 这一种和上面都可以，上面的好处：不需要创建表的先后顺序(可以先创建Post再创建User)
     user = relationship('User', backref='posts', uselist=False, cascade='all')  # uselist=False(一对一)，uselist=True(一对多)
