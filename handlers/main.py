@@ -46,7 +46,7 @@ class PostHandler(BaseHandler):
         if not post:
             self.write('wrong post id {}'.format(post_id))
         else:
-            self.render('post.html', post=post, current_user=current_user)
+            self.render('post.html', post=post, user=current_user)
 
 
 # 图片上传
