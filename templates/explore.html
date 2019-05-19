@@ -2,9 +2,12 @@
 
 {% block title %} explore 页{% end %}
 
-{% block body %}
-
-    explore
+{% block body %}
+<strong>缩略图页面</strong> <br>
+<a href="/">返回主页</a><br><br>
+{% for post in posts %}
+<img src="{{ static_url(post.thumb_url) }}">
+{% end %}
 
 {% end %}
 

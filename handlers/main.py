@@ -1,5 +1,4 @@
 import tornado.web
-from PIL import Image
 from pycket.session import SessionMixin
 
 from util.account import add_post, get_all_posts, get_post
@@ -11,6 +10,7 @@ class BaseHandler(tornado.web.RequestHandler, SessionMixin):
         return self.session.get('my_user', None)
 
 
+# 主页面
 class IndexHandler(tornado.web.RequestHandler):
     """
     前端页面从08开始
@@ -22,15 +22,18 @@ class IndexHandler(tornado.web.RequestHandler):
         self.render('index.html', posts=posts)
 
 
+# 展示缩略图页面
 class ExploreHandler(tornado.web.RequestHandler):
     """
     最近上传的图片(缩略图)
     """
 
     def get(self):
-        self.render('explore.html')
+        posts = get_all_posts()
+        self.render('explore.html', posts=posts)
 
 
+# 图片详情页
 class PostHandler(tornado.web.RequestHandler):
     """
     单个图片的详情页
