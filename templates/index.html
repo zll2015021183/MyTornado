@@ -2,13 +2,15 @@
 
 {% block title %} index 页{% end %}
 
-{% block body %}
+{% block body %}
 
 <a href="/upload">去上传图片</a><br><br>
+<a href="/explore">去缩略图页</a>
+点击下方图片查看图片详情:<br><br>
 
 {% for p in posts %}
-    <img src="{{ static_url(p.image_url) }}"> &nbsp;
+<a href="/post/{{ p.id }}"><img src="{{ static_url(p.image_url) }}"> &nbsp;</a>
 {% end %}
 
-{% end %}
+{% end %}
 

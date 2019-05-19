@@ -2,17 +2,17 @@
 
 {% block title %} login页{% end %}
 
-{% block body %}
+{% block body %}
 
-{% if message %}
-message:{{ message }}
+    {% if message %}
+    message:{{ message }}
+    {% end %}
+
+    <form action="/login" method="post" enctype="multipart/form-data">
+        用户名：<br><input type="text" name="username"><br>
+        密码：<br><input type="password" name="password"><br>
+        <input type="submit">
+    </form>
+
 {% end %}
-
-<form action="/login" method="post" enctype="multipart/form-data">
-    用户名：<br><input type="text" name="username"><br>
-    密码：<br><input type="password" name="password"><br>
-    <input type="submit">
-</form>
-
-{% end %}
 
