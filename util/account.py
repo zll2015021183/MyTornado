@@ -24,11 +24,11 @@ def register(username, password):
 
 
 # 向posts表添加数据
-def add_post(image_url, username):
+def add_post(image_url, thumb_url, username):
     session = Session()
     user = session.query(User).filter_by(username=username).first()
     # session.add(Post(image_url=image_url, user=user))
-    post = Post(image_url=image_url, user=user)
+    post = Post(image_url=image_url, thumb_url=thumb_url, user=user)
     session.add(post)
     session.commit()
     post_id = post.id

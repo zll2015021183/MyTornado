@@ -62,5 +62,5 @@ class UploadHandler(BaseHandler):
             # 生成缩略图
             up_img.make_thumb()
             # 设置post_id
-            post_id = add_post(up_img.image_url, self.current_user)
+            post_id = add_post(up_img.image_url, up_img.thumb_url, self.current_user)
         self.redirect('/post/{}'.format(post_id))
