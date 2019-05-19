@@ -1,7 +1,7 @@
 import tornado.web
 from pycket.session import SessionMixin
 
-from util.account import add_post, get_all_posts, get_post
+from util.account import add_post, get_all_posts, get_post, get_posts_for_login_user
 from util.photo import UploadImage
 
 
@@ -11,40 +11,42 @@ class BaseHandler(tornado.web.RequestHandler, SessionMixin):
 
 
 # 主页面
-class IndexHandler(tornado.web.RequestHandler):
+class IndexHandler(BaseHandler):
     """
     前端页面从08开始
     首页 用于展示用户上传的图片
     """
 
+    @tornado.web.authenticated
     def get(self):
-        posts = get_all_posts()
+        posts = get_posts_for_login_user(self.current_user)
         self.render('index.html', posts=posts)
 
 
 # 展示缩略图页面
-class ExploreHandler(tornado.web.RequestHandler):
+class ExploreHandler(BaseHandler):
     """
     最近上传的图片(缩略图)
     """
 
     def get(self):
-        posts = get_all_posts()
+        posts = get_posts_for_login_user(self.current_user)
         self.render('explore.html', posts=posts)
 
 
 # 图片详情页
-class PostHandler(tornado.web.RequestHandler):
+class PostHandler(BaseHandler):
     """
     单个图片的详情页
     """
 
     def get(self, post_id):
         post = get_post(post_id)
+        current_user = post.user
         if not post:
             self.write('wrong post id {}'.format(post_id))
         else:
-            self.render('post.html', post=post)
+            self.render('post.html', post=post, current_user=current_user)
 
 
 # 图片上传

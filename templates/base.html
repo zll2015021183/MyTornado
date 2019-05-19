@@ -8,9 +8,13 @@
     
 </head>
 <body>
+{% if current_user %}
+<h2>当前登陆用户：{{ current_user }}</h2>
+<hr>
+{% end %}
 
 {% block body %}
-    this is tornado
+
 {% end %}
 </body>
 

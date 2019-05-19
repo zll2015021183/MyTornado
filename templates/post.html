@@ -4,7 +4,7 @@
 
 {% block body %}
 
-post_id号：{{ post.id }} 上传者：{{ post.user.username }}<br>
+post_id号：{{ post.id }} 上传者：{{ current_user.username }}<br>
 <a href="/">返回主页</a><br><br>
 点击图片查看图片的缩略图<br><br>
 <a href="/explore"><img src="{{ static_url(post.image_url) }}"></a>

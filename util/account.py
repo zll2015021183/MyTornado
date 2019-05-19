@@ -49,3 +49,11 @@ def get_post(post_id):
     session = Session()
     post = session.query(Post).filter_by(id=post_id).first()
     return post
+
+
+# 获取当前登陆用户上传的图片
+def get_posts_for_login_user(name):
+    session = Session()
+    user = session.query(User).filter_by(username=name).first()
+    posts = session.query(Post).filter_by(user=user).all()
+    return posts
