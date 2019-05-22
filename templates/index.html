@@ -4,12 +4,11 @@
 
 {% block body %}
 
-<a href="/upload">去上传图片</a><br><br>
-点击下方图片查看图片详情:<br><br>
-
-{% for p in posts %}
-<a href="/post/{{ p.id }}"><img src="{{ static_url(p.image_url) }}"> &nbsp;</a>
-{% end %}
+<div class="container">
+    {% for p in posts %}
+    <a href="/post/{{ p.id }}"><img src="{{ static_url(p.image_url) }}"> &nbsp;</a>
+    {% end %}
+</div>
 
 {% end %}
 

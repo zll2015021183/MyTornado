@@ -1,13 +1,21 @@
 import tornado.web
 from pycket.session import SessionMixin
 
-from util.account import add_post, get_all_posts, get_post, get_posts_for_login_user
+from util.account import HandlerORM
 from util.photo import UploadImage
+from models.db import Session
 
 
 class BaseHandler(tornado.web.RequestHandler, SessionMixin):
     def get_current_user(self):
         return self.session.get('my_user', None)
+
+    def prepare(self):
+        self.db_session = Session()
+        self.orm = HandlerORM(self.db_session)
+
+    def on_finish(self):
+        self.db_session.close()
 
 
 # 主页面
@@ -19,7 +27,7 @@ class IndexHandler(BaseHandler):
 
     @tornado.web.authenticated
     def get(self):
-        posts = get_posts_for_login_user(self.current_user)
+        posts = self.orm.get_posts_for_login_user(self.current_user)
         self.render('index.html', posts=posts)
 
 
@@ -30,7 +38,7 @@ class ExploreHandler(BaseHandler):
     """
 
     def get(self):
-        posts = get_posts_for_login_user(self.current_user)
+        posts = self.orm.get_posts_for_login_user(self.current_user)
         self.render('explore.html', posts=posts)
 
 
@@ -41,7 +49,7 @@ class PostHandler(BaseHandler):
     """
 
     def get(self, post_id):
-        post = get_post(post_id)
+        post = self.orm.get_post(post_id)
         current_user = post.user
         if not post:
             self.write('wrong post id {}'.format(post_id))
@@ -67,5 +75,5 @@ class UploadHandler(BaseHandler):
             # 生成缩略图
             up_img.make_thumb()
             # 设置post_id
-            post_id = add_post(up_img.image_url, up_img.thumb_url, self.current_user)
+            post_id = self.orm.add_post(up_img.image_url, up_img.thumb_url, self.current_user)
         self.redirect('/post/{}'.format(post_id))

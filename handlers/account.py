@@ -1,7 +1,7 @@
 import tornado.web
 
 from .main import BaseHandler
-from util.account import authenticate, register
+from util.account import authenticate
 
 
 class RegisterHandler(tornado.web.RequestHandler):
