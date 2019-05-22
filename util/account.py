@@ -1,7 +1,6 @@
 import hashlib
 
 from models.auth import User, Post
-from models.db import Session
 
 
 # 定义md5加密方法
