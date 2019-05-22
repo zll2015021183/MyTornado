@@ -4,7 +4,7 @@ from .main import BaseHandler
 from util.account import authenticate
 
 
-class RegisterHandler(tornado.web.RequestHandler):
+class RegisterHandler(tornado.web.RequestHandler, BaseHandler):
     def get(self):
         self.render('register.html')
 
@@ -14,7 +14,7 @@ class RegisterHandler(tornado.web.RequestHandler):
         password2 = self.get_argument('password2', '')
 
         if username and password1 and (password1 == password2):
-            register(username, password1)
+            self.orm.register(username, password1)
             self.write('注册成功！')
         else:
             self.write('用户名或者密码错误！')
